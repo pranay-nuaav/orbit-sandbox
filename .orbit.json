@@ -1,0 +1,4 @@
+{
+  "test_command": "python -m pytest -q",
+  "description": "How this repository is tested. Orbit reads this rather than assuming a framework."
+}
