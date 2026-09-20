@@ -20,3 +20,9 @@ class Invoice:
 
     def total(self):
         return sum(self.lines)
+
+    def subtotal(self):
+        return sum(self.lines)
+
+    def total_with_tax(self, rate):
+        return self.subtotal() * (1 + rate / 100)
