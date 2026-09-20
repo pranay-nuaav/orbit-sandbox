@@ -3,9 +3,12 @@
 from dataclasses import dataclass, field
 
 from calc.discount import apply_discount
+from calc.errors import InvalidLine
 
 
 def line_total(unit_price, quantity, discount_percent=0):
+    if quantity <= 0:
+        raise InvalidLine(f"quantity must be greater than zero, got {quantity}")
     return apply_discount(unit_price * quantity, discount_percent)
 
 
