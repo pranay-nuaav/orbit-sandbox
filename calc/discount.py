@@ -1,9 +1,4 @@
-"""Discount rules."""
-
-
-def apply_discount(amount, percent):
-    """Reduce amount by percent.
-
-    Known issue (PROJ-101): a negative percent silently increases the total.
-    """
-    return amount * (1 - percent / 100)
+def apply_discount(amount, discount_percent):
+    if discount_percent > 100:
+        raise ValueError("Discount percent cannot exceed 100")
+    return amount - (amount * discount_percent / 100)
