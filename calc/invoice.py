@@ -1,22 +1,31 @@
-"""Invoice lines and totals."""
+from __future__ import annotations
 
-from dataclasses import dataclass, field
-
-from calc.discount import apply_discount
+from typing import List, Tuple
 
 
-def line_total(unit_price, quantity, discount_percent=0):
-    return apply_discount(unit_price * quantity, discount_percent)
+def line_total(price: float, quantity: int, discount: float = 0) -> float:
+    total = price * quantity
+    if discount:
+        total -= total * (discount / 100)
+    return total
 
 
-@dataclass
 class Invoice:
-    customer: str
-    lines: list = field(default_factory=list)
+    def __init__(self, customer: str) -> None:
+        self.customer = customer
+        self.lines: List[Tuple[float, int, float]] = []
 
-    def add(self, unit_price, quantity, discount_percent=0):
-        self.lines.append(line_total(unit_price, quantity, discount_percent))
+    def add(self, price: float, quantity: int, discount: float = 0) -> "Invoice":
+        if quantity <= 0:
+            raise ValueError("quantity must be positive")
+        self.lines.append((price, quantity, discount))
         return self
 
-    def total(self):
-        return sum(self.lines)
+    def total(self) -> float:
+        return sum(
+            line_total(price, quantity, discount)
+            for price, quantity, discount in self.lines
+        )
+
+
+__all__ = ["line_total", "Invoice"]
